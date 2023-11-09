@@ -1,0 +1,71 @@
+/* Style the header element */
+header {
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Style the logo and shop name */
+.logo-and-shop {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 20px; /* Adjust the size as needed */
+
+  margin-right: 20px;
+}
+
+.shop_name {
+  font-size: 24px;
+  color: #333; /* Adjust the color as needed */
+}
+
+/* Style the user links and search form */
+.user-links {
+  display: flex;
+  gap: 20px;
+}
+
+.user-links a {
+  text-decoration: none;
+  color: #333; /* Adjust the color as needed */
+  font-size: 18px; /* Adjust the font size as needed */
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+}
+
+#search-box {
+  padding: 10px;
+  border: 1px solid #ccc; /* Adjust the border color as needed */
+  border-radius: 4px;
+  font-size: 16px; /* Adjust the font size as needed */
+}
+
+/* Style the navigation bar */
+nav ul {
+  list-style: none;
+  display: flex;
+}
+
+nav li {
+  margin-right: 20px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #333; /* Adjust the color as needed */
+  font-size: 18px; /* Adjust the font size as needed */
+}
+
+/* Hover effect for navigation links */
+nav a:hover {
+  text-decoration: underline;
+}

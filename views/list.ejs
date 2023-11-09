@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Welcome to <%=shopName%></title>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+  </head>
+  <body>
+    <h1><%=shopName%> Shop</h1>
+    <h2>Here are the Flowers that we sell:</h2>
+    <ul>
+      <% availableFlowers.forEach(function(flowers) { %>
+      <li><%= flowers.name %>, £<%=flowers.price%></li>
+      <% }) %>
+    </ul>
+  </body>
+</html>
