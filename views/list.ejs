@@ -3,10 +3,10 @@
   <head>
     <title>Welcome to <%=shopName%></title>
     <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link rel="stylesheet" type="text/css" href="/header.css" />
   </head>
   <body>
-    <h1><%=shopName%> Shop</h1>
-    <h2>Here are the Flowers that we sell:</h2>
+    <%- include('header') %> <%- include('nav') %>
     <ul>
       <% availableFlowers.forEach(function(flowers) { %>
       <li><%= flowers.name %>, £<%=flowers.price%></li>

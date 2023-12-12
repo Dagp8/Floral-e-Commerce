@@ -3,9 +3,10 @@
   <head>
     <title>Login for <%=shopName%></title>
     <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link rel="stylesheet" type="text/css" href="/header.css" />
   </head>
   <body>
-    <h1>Login for <%=shopName%></h1>
+    <%- include('header') %> <%- include('nav') %>
     <form method="POST" action="/loggedin ">
       <p>
         Username:
