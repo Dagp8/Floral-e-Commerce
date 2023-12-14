@@ -11,11 +11,15 @@ header {
   align-items: center;
 }
 .logo img {
-  max-height: 200px;
+  max-height: 150px;
   width: auto;
 }
 
-.logo {
+.logo.left {
+  margin-left: auto;
+}
+
+.logo.right {
   margin-right: auto;
 }
 

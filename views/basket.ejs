@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Basket <%=shopName%></title>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link rel="stylesheet" type="text/css" href="/header.css" />
+  </head>
+  <body>
+    <%- include('header') %> <%- include('nav') %>
+    <h1>Your Basket</h1>
+
+    <% if (cart.length === 0) { %>
+    <p>Your basket is empty.</p>
+    <% } else { %>
+    <ul>
+      <% let subtotal = 0; %> <% cart.forEach(function(item) { %>
+      <li><%= item.name %>, £<%= item.price %></li>
+      <% subtotal += item.price; %> <% }) %>
+    </ul>
+    <p>Subtotal: £<%= subtotal.toFixed(2) %></p>
+    <p>Total: £<%= subtotal.toFixed(2) %></p>
+    <form action="/payment" method="get">
+      <button type="submit">Go to Payment</button>
+    </form>
+    <% } %>
+  </body>
+</html>
