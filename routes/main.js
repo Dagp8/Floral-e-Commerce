@@ -15,6 +15,30 @@ module.exports = function (app, shopData) {
     res.render("about.ejs", shopData);
   });
 
+  app.get("/ecuaflor", function (req, res) {
+    res.render("ecuaflor.ejs", shopData);
+  });
+
+  app.get("/tulip", function (req, res) {
+    res.render("tulip.ejs", shopData);
+  });
+
+  app.get("/bouquet", function (req, res) {
+    res.render("bouquet.ejs", shopData);
+  });
+
+  app.get("/spetial", function (req, res) {
+    res.render("spetial.ejs", shopData);
+  });
+
+  app.get("/orchids", function (req, res) {
+    res.render("orchids.ejs", shopData);
+  });
+
+  app.get("/hydrangea", function (req, res) {
+    res.render("hydrangea.ejs", shopData);
+  });
+
   app.post("/loggedin", function (req, res) {
     const username = req.body.username;
     const password = req.body.password;

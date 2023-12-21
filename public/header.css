@@ -85,3 +85,21 @@ nav a:hover {
 #search-btn:hover {
   background-color: #45a049;
 }
+/* footer */
+footer {
+  background-color: #f4ffc48f;
+  color: black;
+  padding: 10px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.footer-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
