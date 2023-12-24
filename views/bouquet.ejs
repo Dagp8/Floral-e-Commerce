@@ -1,13 +1,47 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>About <%=shopName%></title>
+    <title>Bouquet Selection - <%= shopName %></title>
     <link rel="stylesheet" type="text/css" href="/main.css" />
     <link rel="stylesheet" type="text/css" href="/header.css" />
   </head>
   <body>
     <%- include('header') %> <%- include('nav') %>
-    <h1>Bouquets</h1>
+
+    <ul class="offers-container">
+      <% if (availableBouquets && availableBouquets.length > 0) { %> <%
+      availableBouquets.forEach(function(bouquet) { %>
+      <li class="offers-item">
+        <img
+          src="<%= bouquet.image_url %>"
+          alt="<%= bouquet.name %> Image"
+          width="100"
+        />
+        <%= bouquet.name %>, <% var hasDiscount = bouquet.discount &&
+        bouquet.discount > 0; %> <% if (hasDiscount) { %>
+        <span class="offers-original-price">
+          £<%= bouquet.price.toFixed(2) %>
+        </span>
+        £<%= (bouquet.price - bouquet.discount).toFixed(2) %> (Save £<%=
+        bouquet.discount.toFixed(2) %>)
+        <p class="offers-discount">
+          Discount: £<%= bouquet.discount.toFixed(2) %> off
+        </p>
+        <% } else { %> £<%= bouquet.price.toFixed(2) %> <% } %>
+        <form action="/add-to-cart" method="post">
+          <input
+            type="hidden"
+            name="flowerId"
+            value="<%= bouquet.flowerId %>"
+          />
+          <button class="offers-button" type="submit">Add to Basket</button>
+        </form>
+      </li>
+      <% }) %> <% } else { %>
+      <p>No bouquets available at the moment.</p>
+      <% } %>
+    </ul>
+
+    <%- include('footer') %>
   </body>
-  <%- include('footer') %>
 </html>

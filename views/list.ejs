@@ -7,15 +7,35 @@
   </head>
   <body>
     <%- include('header') %> <%- include('nav') %>
-    <ul>
+    <ul class="offers-container">
       <% availableFlowers.forEach(function(flowers) { %>
-      <li><%= flowers.name %>, £<%=flowers.price%></li>
-      <form action="/add-to-cart" method="post">
-        <input type="hidden" name="flowerId" value="<%= flowers.flowerId %>" />
-        <button type="submit">Add to Basket</button>
-      </form>
+      <li class="offers-item">
+        <img
+          src="<%= flowers.image_url %>"
+          alt="<%= flowers.name %> Image"
+          width="100"
+        />
+        <%= flowers.name %>, <% if (flowers.discount) { %>
+        <span class="offers-original-price">
+          £<%= flowers.price.toFixed(2) %>
+        </span>
+        £<%= (flowers.price - flowers.discount).toFixed(2) %> (Save £<%=
+        flowers.discount.toFixed(2) %>)
+        <p class="offers-discount">
+          Discount: £<%= flowers.discount.toFixed(2) %> off
+        </p>
+        <% } else { %> £<%= flowers.price.toFixed(2) %> <% } %>
+        <form action="/add-to-cart" method="post">
+          <input
+            type="hidden"
+            name="flowerId"
+            value="<%= flowers.flowerId %>"
+          />
+          <button class="offers-button" type="submit">Add to Basket</button>
+        </form>
+      </li>
       <% }) %>
     </ul>
+    <%- include('footer') %>
   </body>
-  <%- include('footer') %>
 </html>

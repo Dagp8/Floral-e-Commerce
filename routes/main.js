@@ -2,6 +2,13 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 module.exports = function (app, shopData) {
+  const redirectLogin = (req, res, next) => {
+    if (!req.session.userId) {
+      res.redirect("./login");
+    } else {
+      next();
+    }
+  };
   // Handle routes
 
   app.get("/", function (req, res) {
@@ -16,7 +23,29 @@ module.exports = function (app, shopData) {
   });
 
   app.get("/ecuaflor", function (req, res) {
-    res.render("ecuaflor.ejs", shopData);
+    let sqlquery = `
+        SELECT
+            f.*,
+            COALESCE(fo.discount, 0) AS discount
+        FROM
+            flowers f
+        LEFT JOIN
+            flower_offers fo ON f.flowerId = fo.flowerId AND f.category = 'Ecuadorian'
+        WHERE
+            f.category = 'Ecuadorian';
+    `;
+
+    // execute sql query
+    db.query(sqlquery, (err, result) => {
+      if (err) {
+        console.error(err);
+        res.redirect("./");
+      } else {
+        let newData = Object.assign({}, shopData, { availableFlowers: result });
+        console.log(newData);
+        res.render("ecuaflor.ejs", newData);
+      }
+    });
   });
 
   app.get("/tulip", function (req, res) {
@@ -102,20 +131,7 @@ module.exports = function (app, shopData) {
             console.error("Error saving user data:", err);
             res.status(500).send("Error saving user data");
           } else {
-            result =
-              "Hello " +
-              req.body.first +
-              " " +
-              req.body.last +
-              " you are now registered! We will send an email to you at " +
-              req.body.email;
-            result +=
-              " Your password is: " +
-              req.body.password +
-              " and your hashed password is: " +
-              hashedPassword;
-
-            res.send(result);
+            res.render("login.ejs", shopData);
           }
         });
       }
@@ -142,7 +158,17 @@ module.exports = function (app, shopData) {
   });
 
   app.get("/list", function (req, res) {
-    let sqlquery = "SELECT * FROM flowers"; // query database to get all the books
+    let sqlquery = `
+    SELECT
+      f.*,
+      fo.discount
+    FROM
+      flowers f
+    INNER JOIN
+      flower_offers fo
+    ON
+      f.flowerId = fo.flowerId
+  `;
     // execute sql query
     db.query(sqlquery, (err, result) => {
       if (err) {
@@ -162,7 +188,7 @@ module.exports = function (app, shopData) {
     });
   });
 
-  app.post("/add-to-cart", function (req, res) {
+  app.post("/add-to-cart", redirectLogin, function (req, res) {
     // Extract the flowerId from the form submission
     const flowerId = req.body.flowerId;
     const userId = req.session.userId;

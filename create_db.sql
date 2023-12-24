@@ -15,10 +15,21 @@ CREATE TABLE users (
     hashedPassword VARCHAR(255) NOT NULL
 );
 
+
 CREATE TABLE flowers (
     flowerId INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    price DECIMAL(5, 2) NOT NULL
+    price DECIMAL(5, 2) NOT NULL,
+    image_url VARCHAR(255),
+    category VARCHAR(255)
+);
+
+
+CREATE TABLE flower_offers (
+    offerId INT AUTO_INCREMENT PRIMARY KEY,
+    flowerId INT,
+    discount DECIMAL(5, 2) NOT NULL,
+    FOREIGN KEY (flowerId) REFERENCES flowers(flowerId)
 );
 
 
@@ -29,4 +40,3 @@ CREATE TABLE CartItems (
     FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (flowerId) REFERENCES flowers(flowerId)
 );
-
