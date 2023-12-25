@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Basket <%=shopName%></title>
+    <title>Basket <%= shopName %></title>
     <link rel="stylesheet" type="text/css" href="/main.css" />
     <link rel="stylesheet" type="text/css" href="/header.css" />
   </head>
@@ -14,12 +14,20 @@
     <% } else { %>
     <ul>
       <% let subtotal = 0; %> <% cart.forEach(function(item) { %>
-      <li><%= item.name %>, £<%= item.price %></li>
-      <% subtotal += item.price; %> <% }) %>
+      <li>
+        <%= item.name %>, <% if (item.discount) { %>
+        <span style="text-decoration: line-through; color: #999"
+          >£<%= item.price.toFixed(2) %></span
+        >
+        £<%= (item.price - item.discount).toFixed(2) %> (Save £<%=
+        item.discount.toFixed(2) %>) <% } else { %> £<%= item.price.toFixed(2)
+        %> <% } %>
+      </li>
+      <% subtotal += item.price - (item.discount || 0); %> <% }) %>
     </ul>
     <p>Subtotal: £<%= subtotal.toFixed(2) %></p>
-    <p>Total: £<%= subtotal.toFixed(2) %></p>
-    <form action="/payment" method="get">
+    <p>Total: £<%= (subtotal || 0).toFixed(2) %></p>
+    <form action="/payment" method="post">
       <button type="submit">Go to Payment</button>
     </form>
     <% } %>

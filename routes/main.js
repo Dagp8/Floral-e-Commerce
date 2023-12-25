@@ -49,23 +49,133 @@ module.exports = function (app, shopData) {
   });
 
   app.get("/tulip", function (req, res) {
-    res.render("tulip.ejs", shopData);
+    let sqlquery = `
+    SELECT
+        f.*,
+        COALESCE(fo.discount, 0) AS discount
+    FROM
+        flowers f
+    LEFT JOIN
+        flower_offers fo ON f.flowerId = fo.flowerId AND f.category = 'Tulips'
+    WHERE
+        f.category = 'Tulips';
+`;
+
+    // execute sql query
+    db.query(sqlquery, (err, result) => {
+      if (err) {
+        console.error(err);
+        res.redirect("./");
+      } else {
+        let newData = Object.assign({}, shopData, { availableFlowers: result });
+        console.log(newData);
+        res.render("tulip.ejs", newData);
+      }
+    });
   });
 
   app.get("/bouquet", function (req, res) {
-    res.render("bouquet.ejs", shopData);
+    let sqlquery = `
+    SELECT
+        f.*,
+        COALESCE(fo.discount, 0) AS discount
+    FROM
+        flowers f
+    LEFT JOIN
+        flower_offers fo ON f.flowerId = fo.flowerId AND f.category = 'Bouquets'
+    WHERE
+        f.category = 'Bouquets';
+`;
+
+    // execute sql query
+    db.query(sqlquery, (err, result) => {
+      if (err) {
+        console.error(err);
+        res.redirect("./");
+      } else {
+        let newData = Object.assign({}, shopData, { availableFlowers: result });
+        console.log(newData);
+        res.render("bouquet.ejs", newData);
+      }
+    });
   });
 
-  app.get("/spetial", function (req, res) {
-    res.render("spetial.ejs", shopData);
+  app.get("/special", function (req, res) {
+    let sqlquery = `
+    SELECT
+        f.*,
+        COALESCE(fo.discount, 0) AS discount
+    FROM
+        flowers f
+    LEFT JOIN
+        flower_offers fo ON f.flowerId = fo.flowerId AND f.category = 'Special'
+    WHERE
+        f.category = 'Special';
+`;
+
+    // execute sql query
+    db.query(sqlquery, (err, result) => {
+      if (err) {
+        console.error(err);
+        res.redirect("./");
+      } else {
+        let newData = Object.assign({}, shopData, { availableFlowers: result });
+        console.log(newData);
+        res.render("special.ejs", newData);
+      }
+    });
   });
 
   app.get("/orchids", function (req, res) {
-    res.render("orchids.ejs", shopData);
+    let sqlquery = `
+    SELECT
+        f.*,
+        COALESCE(fo.discount, 0) AS discount
+    FROM
+        flowers f
+    LEFT JOIN
+        flower_offers fo ON f.flowerId = fo.flowerId AND f.category = 'Orchids'
+    WHERE
+        f.category = 'Orchids';
+`;
+
+    // execute sql query
+    db.query(sqlquery, (err, result) => {
+      if (err) {
+        console.error(err);
+        res.redirect("./");
+      } else {
+        let newData = Object.assign({}, shopData, { availableFlowers: result });
+        console.log(newData);
+        res.render("orchids.ejs", newData);
+      }
+    });
   });
 
   app.get("/hydrangea", function (req, res) {
-    res.render("hydrangea.ejs", shopData);
+    let sqlquery = `
+    SELECT
+        f.*,
+        COALESCE(fo.discount, 0) AS discount
+    FROM
+        flowers f
+    LEFT JOIN
+        flower_offers fo ON f.flowerId = fo.flowerId AND f.category = 'Hydrangea'
+    WHERE
+        f.category = 'Hydrangea';
+`;
+
+    // execute sql query
+    db.query(sqlquery, (err, result) => {
+      if (err) {
+        console.error(err);
+        res.redirect("./");
+      } else {
+        let newData = Object.assign({}, shopData, { availableFlowers: result });
+        console.log(newData);
+        res.render("hydrangea.ejs", newData);
+      }
+    });
   });
 
   app.post("/loggedin", function (req, res) {
@@ -138,21 +248,29 @@ module.exports = function (app, shopData) {
     });
   });
 
-  app.get("/search", function (req, res) {
-    res.render("search.ejs", shopData);
-  });
-
   app.get("/search-result", function (req, res) {
-    //searching in the database
-    let sqlquery =
-      "SELECT * FROM flowers WHERE name LIKE '%" + req.query.keyword + "%'";
-    // execute sql query
-    db.query(sqlquery, (err, result) => {
+    // Searching in the database
+    let sqlquery = `
+      SELECT f.*, fo.discount
+      FROM flowers f
+      LEFT JOIN flower_offers fo ON f.flowerId = fo.flowerId
+      WHERE f.name LIKE ?;
+    `;
+
+    // Add '%' at the beginning and end of the search term
+    let searchTerm = "%" + req.query.keyword + "%";
+
+    // Execute the SQL query
+    db.query(sqlquery, [searchTerm], (err, result) => {
       if (err) {
+        console.error(err);
         res.redirect("./");
       }
+
+      // Create a new data object with the search results
       let newData = Object.assign({}, shopData, { availableFlowers: result });
-      console.log(newData);
+
+      // Render the search results page
       res.render("list.ejs", newData);
     });
   });
@@ -188,13 +306,19 @@ module.exports = function (app, shopData) {
     });
   });
 
-  app.post("/add-to-cart", redirectLogin, function (req, res) {
+  app.post("/add-to-cart", function (req, res) {
     // Extract the flowerId from the form submission
     const flowerId = req.body.flowerId;
     const userId = req.session.userId;
 
     // get flower information based on flowerId
-    let flowerQuery = "SELECT * FROM flowers WHERE flowerId = ?";
+    let flowerQuery = `
+      SELECT f.*, fo.discount
+      FROM flowers f
+      LEFT JOIN flower_offers fo ON f.flowerId = fo.flowerId
+      WHERE f.flowerId = ?;
+    `;
+
     db.query(flowerQuery, [flowerId], (flowerErr, flowerResult) => {
       if (flowerErr) {
         console.error("Error fetching flower information:", flowerErr);
@@ -207,21 +331,12 @@ module.exports = function (app, shopData) {
 
       const flowerInfo = flowerResult[0];
 
-      // query to insert the cart item into CartItems table
-      let cartQuery = "INSERT INTO CartItems (user_id, flowerId) VALUES (?, ?)";
-      db.query(cartQuery, [userId, flowerId], (cartErr, cartResult) => {
-        if (cartErr) {
-          console.error("Error adding to cart:", cartErr);
-          return res.status(500).send("Error adding to cart");
-        }
+      // Store the flower information in the user's cart in the session
+      req.session.cart = req.session.cart || [];
+      req.session.cart.push(flowerInfo);
 
-        // Store the flower information in the user's cart in the session
-        req.session.cart = req.session.cart || [];
-        req.session.cart.push(flowerInfo);
-
-        // Redirect basket page after adding to the cart
-        res.redirect("/basket");
-      });
+      // Redirect to the basket page after adding to the cart
+      res.redirect("/basket");
     });
   });
 };

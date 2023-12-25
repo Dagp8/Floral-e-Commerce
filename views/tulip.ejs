@@ -1,13 +1,37 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>About <%=shopName%></title>
+    <title><%= shopName %></title>
     <link rel="stylesheet" type="text/css" href="/main.css" />
     <link rel="stylesheet" type="text/css" href="/header.css" />
   </head>
   <body>
     <%- include('header') %> <%- include('nav') %>
-    <h1>Tulips Selection</h1>
+
+    <ul class="ecua-container">
+      <% availableFlowers.forEach(function(flower) { %>
+      <li class="ecua-item">
+        <img
+          src="<%= flower.image_url %>"
+          alt="<%= flower.name %> Image"
+          width="100"
+        />
+        <%= flower.name %>, <% if (flower.discount) { %>
+        <span class="original-price"> £<%= flower.price.toFixed(2) %> </span>
+        £<%= (flower.price - flower.discount).toFixed(2) %> (Save £<%=
+        flower.discount.toFixed(2) %>)
+        <p class="ecua-discount">
+          Discount: £<%= flower.discount.toFixed(2) %> off
+        </p>
+        <% } else { %> £<%= flower.price.toFixed(2) %> <% } %>
+        <form action="/add-to-cart" method="post">
+          <input type="hidden" name="flowerId" value="<%= flower.flowerId %>" />
+          <button class="offers-button" type="submit">Add to Basket</button>
+        </form>
+      </li>
+      <% }) %>
+    </ul>
+
+    <%- include('footer') %>
   </body>
-  <%- include('footer') %>
 </html>
