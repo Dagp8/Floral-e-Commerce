@@ -24,6 +24,16 @@ CREATE TABLE flowers (
     category VARCHAR(255)
 );
 
+CREATE TABLE orders (
+    orderId INT AUTO_INCREMENT PRIMARY KEY,
+    userId INT,
+    flowerId INT,
+    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (userId) REFERENCES users(user_id),
+    FOREIGN KEY (flowerId) REFERENCES flowers(flowerId)
+);
+
+
 
 CREATE TABLE flower_offers (
     offerId INT AUTO_INCREMENT PRIMARY KEY,

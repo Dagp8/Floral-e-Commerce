@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%=shopName%></title>
     <link rel="stylesheet" type="text/css" href="/main.css" />
     <link rel="stylesheet" type="text/css" href="/header.css" />
+    <script
+      src="https://kit.fontawesome.com/8868674f05.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <%- include('header') %> <%- include('nav') %>
@@ -65,6 +71,16 @@
           </figcaption></a
         >
       </figure>
+    </div>
+    <div class="recent-comments-container">
+      <h2>Recent Comments</h2>
+      <ul>
+        <% recentComments.forEach(comment => { %>
+        <li>
+          <strong><%= comment.username %>:</strong> <%= comment.comment_text %>
+        </li>
+        <% }) %>
+      </ul>
     </div>
   </body>
   <%- include('footer') %>

@@ -1,36 +1,69 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Basket <%= shopName %></title>
     <link rel="stylesheet" type="text/css" href="/main.css" />
     <link rel="stylesheet" type="text/css" href="/header.css" />
+    <link rel="stylesheet" type="text/css" href="/basket.css" />
   </head>
   <body>
     <%- include('header') %> <%- include('nav') %>
-    <h1>Your Basket</h1>
 
-    <% if (cart.length === 0) { %>
-    <p>Your basket is empty.</p>
-    <% } else { %>
-    <ul>
-      <% let subtotal = 0; %> <% cart.forEach(function(item) { %>
-      <li>
-        <%= item.name %>, <% if (item.discount) { %>
-        <span style="text-decoration: line-through; color: #999"
-          >£<%= item.price.toFixed(2) %></span
-        >
-        £<%= (item.price - item.discount).toFixed(2) %> (Save £<%=
-        item.discount.toFixed(2) %>) <% } else { %> £<%= item.price.toFixed(2)
-        %> <% } %>
-      </li>
-      <% subtotal += item.price - (item.discount || 0); %> <% }) %>
-    </ul>
-    <p>Subtotal: £<%= subtotal.toFixed(2) %></p>
-    <p>Total: £<%= (subtotal || 0).toFixed(2) %></p>
-    <form action="/payment" method="post">
-      <button type="submit">Go to Payment</button>
-    </form>
-    <% } %>
+    <div class="basket-container">
+      <h1>Your Basket</h1>
+
+      <% if (cart.length === 0) { %>
+      <p>Your basket is empty.</p>
+      <% } else { %>
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Discount Amount</th>
+            <th>Discounted Price</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% let subtotal = 0; %> <% cart.forEach(function(item, index) { %>
+          <tr>
+            <td><%= item.name %></td>
+            <td>£<%= item.price.toFixed(2) %></td>
+            <td>
+              <% if (item.discount) { %> £<%= item.discount.toFixed(2) %> <% }
+              else { %> N/A <% } %>
+            </td>
+            <td>
+              <% if (item.discount) { %> £<%= (item.price -
+              item.discount).toFixed(2) %> <% } else { %> £<%=
+              item.price.toFixed(2) %> <% } %>
+            </td>
+            <td>
+              <form
+                class="remove-form"
+                action="/remove-from-cart"
+                method="post"
+              >
+                <input type="hidden" name="index" value="<%= index %>" />
+                <button type="submit">Remove</button>
+              </form>
+            </td>
+          </tr>
+          <% subtotal += item.price - (item.discount || 0); %> <% }) %>
+        </tbody>
+      </table>
+      <p>Subtotal: £<%= subtotal.toFixed(2) %></p>
+      <p>Total: £<%= (subtotal || 0).toFixed(2) %></p>
+
+      <form action="/paymentForm" method="get">
+        <button type="submit">Go to Payment</button>
+      </form>
+      <% } %>
+    </div>
+
+    <%- include('footer') %>
   </body>
-  <%- include('footer') %>
 </html>

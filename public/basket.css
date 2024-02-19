@@ -1,0 +1,43 @@
+.basket-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.basket-container h1 {
+  color: #6fca00;
+}
+
+.basket-container table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.basket-container th,
+.basket-container td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.basket-container th {
+  background-color: #eb2c0f;
+  color: white;
+}
+
+.basket-container form button[type="submit"] {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.basket-container form button[type="submit"]:hover {
+  background-color: #d84ded;
+}

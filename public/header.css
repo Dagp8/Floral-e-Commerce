@@ -90,16 +90,61 @@ nav a:hover {
 #search-btn:hover {
   background-color: #45a049;
 }
+
+/* comments and add_comments buttons */
+.footer-buttons {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+}
+
+.add-comments-button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 15px;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.add-comments-button:hover {
+  background-color: #45a049;
+}
+
+.comments-button {
+  background-color: #008cba;
+  color: white;
+  padding: 10px 15px;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.comments-button:hover {
+  background-color: #0077a8;
+}
+
 /* footer */
+
 footer {
   background-color: #f4ffc48f;
-  color: black;
-  padding: 10px;
+  margin-top: 50px;
+  padding: 10px 20px;
   text-align: center;
-  margin-top: 20px;
 }
 
 .footer-content {
-  max-width: 600px;
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-content i {
+  font-size: 40px;
+  margin: 0 30px;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+.footer-content i:hover {
+  transform: scale(1.1);
 }
