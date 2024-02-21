@@ -66,4 +66,10 @@ VALUES ('Hydrangea & Roses ', 35.00, '/images/hydra_roses.jpeg', 'Hydrangea'),
        ('White Hydrangea ', 25.00, '/images/white_hydra.jpg', 'Hydrangea');
 
 
+UPDATE flowers SET stock_quantity = stock_quantity + 50 WHERE category = 'Ecuadorian';
+UPDATE flowers SET stock_quantity = stock_quantity + 50 WHERE category = 'Tulips';
+UPDATE flowers SET stock_quantity = stock_quantity + 50 WHERE category = 'Bouquets';
+UPDATE flowers SET stock_quantity = stock_quantity + 50 WHERE category = 'Special';
+UPDATE flowers SET stock_quantity = stock_quantity + 50 WHERE category = 'Orchids';
+UPDATE flowers SET stock_quantity = stock_quantity + 50 WHERE category = 'Hydrangea';
 

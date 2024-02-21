@@ -119,7 +119,8 @@ module.exports = function (app, shopData) {
     const password = req.body.password;
 
     // Retrieve the hashed password from the database for the given username
-    let sqlquery = "SELECT hashedPassword FROM users WHERE username = ?";
+    let sqlquery =
+      "SELECT user_id, hashedPassword FROM users WHERE username = ?";
     db.query(sqlquery, [username], (err, result) => {
       if (err) {
         console.error("Error fetching user data:", err);
@@ -129,7 +130,7 @@ module.exports = function (app, shopData) {
       if (result.length === 0) {
         return res.status(404).send("User not found");
       }
-
+      const userId = result[0].user_id;
       const hashedPassword = result[0].hashedPassword;
 
       // Compare the provided password with the hashed password
@@ -140,7 +141,7 @@ module.exports = function (app, shopData) {
         } else if (passwordMatch) {
           // Passwords match - user is authenticated
           // Save user session here, when login is successful
-          req.session.userId = username;
+          req.session.userId = userId;
           res.redirect("/dashboard");
         } else {
           // Passwords do not match
@@ -217,83 +218,102 @@ module.exports = function (app, shopData) {
     res.render("basket.ejs", {
       ...shopData,
       cart: cartItems,
-    });
-  });
-
-  app.post("/add-to-cart", function (req, res) {
-    // Extract the flowerId from the form submission
-    const flowerId = req.body.flowerId;
-    const userId = req.session.userId;
-
-    // get flower information based on flowerId
-    let flowerQuery = `
-      SELECT f.*, fo.discount
-      FROM flowers f
-      LEFT JOIN flower_offers fo ON f.flowerId = fo.flowerId
-      WHERE f.flowerId = ?;
-    `;
-
-    db.query(flowerQuery, [flowerId], (flowerErr, flowerResult) => {
-      if (flowerErr) {
-        console.error("Error fetching flower information:", flowerErr);
-        return res.status(500).send("Error fetching flower information");
-      }
-
-      if (flowerResult.length === 0) {
-        return res.status(404).send("Flower not found");
-      }
-
-      const flowerInfo = flowerResult[0];
-
-      // Store the flower information in the user's cart in the session
-      req.session.cart = req.session.cart || [];
-      req.session.cart.push(flowerInfo);
-
-      // Redirect to the basket page after adding to the cart
-      res.redirect("/basket");
-    });
-  });
-
-  app.get("/paymentForm", function (req, res) {
-    const cartItems = req.session.cart || [];
-    const subtotal = cartItems.reduce((total, item) => total + item.price, 0);
-    res.render("paymentForm.ejs", {
-      ...shopData,
-      subtotal: subtotal,
-      PublicKey:
+      stripePublicKey:
         "pk_test_51OlVRnJajxcYGNtiC3pqYUtRkFXr6zo5swuHdDp49rfN0fPPsAM9GQj2GMIfkLmXr8ACN5iv6PPecTRoBaRxRKRQ00vRd3Kfps",
     });
   });
 
   app.post("/payment", (req, res) => {
-    const subtotal = parseFloat(req.body.subtotal); // Convert the subtotal to a float number
+    const subtotal = parseFloat(req.body.subtotal);
 
-    // Check if the subtotal is a valid number and is not negative
     if (isNaN(subtotal) || subtotal <= 0) {
       return res.status(400).send("Invalid subtotal amount");
     }
-    // Check if there are products in the cart
+
     if (!req.session.cart || req.session.cart.length === 0) {
       return res.status(400).send("Your cart is empty");
     }
 
     stripe.charges.create(
       {
-        amount: subtotal * 100, // The amount should be in cents
+        amount: subtotal * 100,
         currency: "gbp",
-        source: req.body.stripeToken, // Receive the credit card token from the form
-        description: "Payment at Floral Harmony", // Payment description
+        source: req.body.stripeToken,
+        description: "Payment at Floral Harmony",
       },
       (err, charge) => {
         if (err) {
           console.error(err);
           res.send("Payment error");
         } else {
-          req.session.cart = [];
-          res.redirect("/dashboard?payment=success");
+          const userId = req.session.userId;
+          const flowerId = req.session.cart[0].flowerId;
+          const quantity = req.session.cart[0].quantity;
+          const price = req.session.cart[0].price;
+          const insertOrderQuery =
+            "INSERT INTO order_details (orderId, flowerId, quantity, price) VALUES (?, ?, ?, ?)";
+
+          db.query(
+            insertOrderQuery,
+            [userId, flowerId, quantity, price],
+            (err, result) => {
+              if (err) {
+                console.error("Error inserting order details:", err);
+                return res.status(500).send("Error inserting order details");
+              }
+              req.session.cart = [];
+              res.redirect("/dashboard?payment=success");
+            }
+          );
         }
       }
     );
+  });
+
+  app.post("/add-to-cart", function (req, res) {
+    // Extract the flowerId from the form submission
+    const flowerId = req.body.flowerId;
+    const quantity = parseInt(req.body.quantity) || 1;
+
+    // Initialize the cart if it's not already initialized
+    req.session.cart = req.session.cart || [];
+
+    // Check if the flower already exists in the cart
+    const existingFlower = req.session.cart.find(
+      (item) => item.flowerId === flowerId
+    );
+
+    if (existingFlower) {
+      // If the flower already exists, update its quantity
+      existingFlower.quantity += quantity;
+    } else {
+      // If the flower does not exist, get flower information based on flowerId
+      let flowerQuery = `
+        SELECT f.*, fo.discount
+        FROM flowers f
+        LEFT JOIN flower_offers fo ON f.flowerId = fo.flowerId
+        WHERE f.flowerId = ?;
+      `;
+
+      db.query(flowerQuery, [flowerId], (flowerErr, flowerResult) => {
+        if (flowerErr) {
+          console.error("Error fetching flower information:", flowerErr);
+          return res.status(500).send("Error fetching flower information");
+        }
+
+        if (flowerResult.length === 0) {
+          return res.status(404).send("Flower not found");
+        }
+
+        const flowerInfo = flowerResult[0];
+        flowerInfo.quantity = quantity;
+
+        // Add the flower information to the cart
+        req.session.cart.push(flowerInfo);
+        // Redirect to the basket page after adding to the cart
+        res.redirect("/basket");
+      });
+    }
   });
 
   app.post("/remove-from-cart", function (req, res) {
@@ -376,10 +396,12 @@ module.exports = function (app, shopData) {
     const userId = req.session.userId;
 
     let ordersQuery = `
-      SELECT o.*, f.name AS flower_name, f.price AS flower_price
-      FROM orders o
-      INNER JOIN flowers f ON o.flowerId = f.flowerId
-      WHERE o.userId = ?;
+    SELECT o.*, f.name AS flower_name, f.price AS flower_price
+    FROM orders o
+    INNER JOIN order_details od ON o.orderId = od.orderId
+    INNER JOIN flowers f ON od.flowerId = f.flowerId
+    WHERE o.user_id = ?;
+
     `;
 
     db.query(ordersQuery, [userId], (err, orders) => {

@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="/header.css" />
+    <link rel="stylesheet" type="text/css" href="/basket.css" />
     <script
       src="https://kit.fontawesome.com/8868674f05.js"
       crossorigin="anonymous"
@@ -15,6 +16,39 @@
     <p class="payment-success-message">
       Payment successful! Your order has been processed.
     </p>
+    <% } %> <% if (orders && orders.length > 0) { %>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Date</th>
+            <th>Total Amount</th>
+            <th>Payment Method</th>
+            <th>Shipping Address</th>
+            <th>Flower Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% orders.forEach(order => { %>
+          <tr>
+            <td><%= order.orderId %></td>
+            <td><%= order.order_date %></td>
+            <td><%= order.total_amount %></td>
+            <td><%= order.payment_method %></td>
+            <td><%= order.shipping_address %></td>
+            <td><%= order.flower_name %></td>
+            <td><%= order.quantity %></td>
+            <td><%= order.flower_price %></td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+    <% } else { %>
+    <p>No orders found.</p>
     <% } %>
   </body>
   <%- include('footer') %>

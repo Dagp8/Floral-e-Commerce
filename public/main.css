@@ -209,6 +209,7 @@ p {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+  margin: 0;
 }
 
 .offers-item {
@@ -216,10 +217,11 @@ p {
   margin: 10px;
   padding: 10px;
   text-align: center;
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 150px;
+  width: 200px;
   height: 350px;
   position: relative;
 }
@@ -228,6 +230,7 @@ p {
   width: 150px;
   height: 150px;
   object-fit: cover;
+  margin-bottom: 10px;
 }
 
 .offers-content {
@@ -258,13 +261,15 @@ p {
   background-color: #45a049;
 }
 
-/* Ecuadorian Flowers Page */
+/* flowers page  */
+
 .ecua-container {
   list-style: none;
   padding: 0;
+  margin: 0;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: space-around; /* Para espaciar los elementos horizontalmente */
 }
 
 .ecua-item {
@@ -272,21 +277,20 @@ p {
   margin: 10px;
   padding: 10px;
   text-align: center;
-  display: flex;
-  flex-direction: column;
+  display: flex; /* Cambiado de inline-block a flex para mejor alineación */
+  flex-direction: column; /* Alinear contenido verticalmente */
   justify-content: space-between;
   align-items: center;
-  width: 200px;
-  height: 350px;
-  box-sizing: border-box;
+  width: 200px; /* Ajusta el ancho según tu preferencia */
+  height: 350px; /* Ajusta la altura según tu preferencia */
   position: relative;
-  background-color: white;
 }
 
 .ecua-item img {
   width: 150px;
   height: 150px;
   object-fit: cover;
+  margin-bottom: 10px; /* Espaciado entre la imagen y el texto */
 }
 
 .original-price {
@@ -295,12 +299,25 @@ p {
 }
 
 .ecua-discount {
-  color: #e44d26;
+  color: green;
   font-weight: bold;
   margin-top: 10px;
 }
 
-.ecua-button {
+form {
+  margin-top: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input[type="number"] {
+  width: 50px;
+}
+
+.offers-button {
   background-color: #4caf50;
   color: white;
   padding: 10px;
@@ -308,6 +325,6 @@ p {
   cursor: pointer;
 }
 
-.ecua-button:hover {
+.offers-button:hover {
   background-color: #45a049;
 }

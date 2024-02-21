@@ -24,6 +24,7 @@
             <th>Price</th>
             <th>Discount Amount</th>
             <th>Discounted Price</th>
+            <th>Quantity</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -41,6 +42,7 @@
               item.discount).toFixed(2) %> <% } else { %> £<%=
               item.price.toFixed(2) %> <% } %>
             </td>
+            <td><%= item.quantity %></td>
             <td>
               <form
                 class="remove-form"
@@ -52,15 +54,27 @@
               </form>
             </td>
           </tr>
-          <% subtotal += item.price - (item.discount || 0); %> <% }) %>
+          <% subtotal += (item.price - (item.discount || 0)) %> <% }) %>
         </tbody>
       </table>
       <p>Subtotal: £<%= subtotal.toFixed(2) %></p>
       <p>Total: £<%= (subtotal || 0).toFixed(2) %></p>
 
-      <form action="/paymentForm" method="get">
-        <button type="submit">Go to Payment</button>
+      <form action="/payment" method="POST">
+        <input type="hidden" name="subtotal" value="<%= subtotal %>" />
+        <script
+          src="https://checkout.stripe.com/checkout.js"
+          class="stripe-button"
+          data-key="<%= stripePublicKey %>"
+          data-amount="<%= subtotal * 100 %>"
+          data-name="Floral Harmony"
+          data-description="Payment for Order"
+          data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+          data-locale="auto"
+          data-currency="gbp"
+        ></script>
       </form>
+
       <% } %>
     </div>
 
