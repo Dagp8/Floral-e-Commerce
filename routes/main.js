@@ -442,12 +442,13 @@ module.exports = function (app, shopData) {
     const userId = req.session.userId;
 
     let ordersQuery = `
-    SELECT o.*, f.name AS flower_name, f.price AS flower_price, DATE_FORMAT(o.order_date, '%a %b %e %Y %T') AS formatted_order_date
-    FROM orders o
-    INNER JOIN order_details od ON o.orderId = od.orderId
-    INNER JOIN flowers f ON od.flowerId = f.flowerId
-    WHERE o.user_id = ?;
-
+      SELECT DISTINCT o.orderId, SUM(od.quantity * f.price) AS total_amount, MAX(o.order_date) AS latest_order_date
+      FROM orders o
+      INNER JOIN order_details od ON o.orderId = od.orderId
+      INNER JOIN flowers f ON od.flowerId = f.flowerId
+      WHERE o.user_id = ?
+      GROUP BY o.orderId
+      ORDER BY latest_order_date DESC;
     `;
 
     db.query(ordersQuery, [userId], (err, orders) => {
@@ -462,6 +463,38 @@ module.exports = function (app, shopData) {
         ...shopData,
         orders: orders,
         paymentSuccess: paymentSuccess,
+      });
+    });
+  });
+
+  app.get("/order/:orderId", redirectLogin, function (req, res) {
+    const userId = req.session.userId;
+    const orderId = req.params.orderId;
+
+    let orderDetailsQuery = `
+    SELECT o.*, f.name AS flower_name, f.price AS flower_price,
+    od.quantity AS quantity, 
+    (od.quantity * f.price) AS subtotal, 
+    DATE_FORMAT(o.order_date, '%a %b %e %Y %T') AS formatted_order_date
+    FROM orders o
+    INNER JOIN order_details od ON o.orderId = od.orderId
+    INNER JOIN flowers f ON od.flowerId = f.flowerId
+    WHERE o.orderId = ? AND o.user_id = ?;
+`;
+
+    db.query(orderDetailsQuery, [orderId, userId], (err, orderDetails) => {
+      if (err) {
+        console.error("Error fetching order details:", err);
+        return res.status(500).send("Error fetching order details");
+      }
+
+      if (orderDetails.length === 0) {
+        return res.status(404).send("Order not found");
+      }
+
+      res.render("order-details.ejs", {
+        ...shopData,
+        orders: orderDetails,
       });
     });
   });

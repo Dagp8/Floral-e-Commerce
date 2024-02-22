@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/header.css" />
+    <link rel="stylesheet" type="text/css" href="/basket.css" />
+    <script
+      src="https://kit.fontawesome.com/8868674f05.js"
+      crossorigin="anonymous"
+    ></script>
+    <title><%=shopName%></title>
+  </head>
+  <body>
+    <%- include('header') %>
+
+    <div class="container">
+      <h1>Order Details</h1>
+      <% if (orders) { %>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Flower Name</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Total Amount</th>
+              <th>Payment Method</th>
+              <th>Shipping Address</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% orders.forEach(item => { %>
+            <tr>
+              <td><%= item.orderId %></td>
+              <td><%= item.flower_name %></td>
+              <td>£<%= item.flower_price.toFixed(2) %></td>
+              <td><%= item.quantity %></td>
+              <td>£<%= item.subtotal.toFixed(2) %></td>
+              <td><%= item.payment_method %></td>
+              <td><%= item.shipping_address %></td>
+              <td><%= item.formatted_order_date %></td>
+            </tr>
+            <% }); %>
+
+            <tr>
+              <td colspan="3"></td>
+              <td><strong>Total Order Amount:</strong></td>
+              <td colspan="4">
+                £ <%= orders.reduce((total, item) => total + item.subtotal,
+                0).toFixed(2) %>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top: 20px">
+          <a href="/dashboard" class="button">Back to Dashboard</a>
+        </div>
+      </div>
+      <% } else { %>
+      <p>No order details found.</p>
+      <% } %>
+    </div>
+  </body>
+  <%- include('footer') %>
+</html>
