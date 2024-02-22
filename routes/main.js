@@ -284,8 +284,26 @@ module.exports = function (app, shopData) {
                     return res.send("Error placing order details");
                   }
 
+                  const cartItems = req.session.cart;
+
                   // Clear cart after successful order
                   req.session.cart = [];
+
+                  // Update stock for each flower in the cart
+                  cartItems.forEach((item) => {
+                    const updateStockQuery =
+                      "UPDATE flowers SET stock_quantity = stock_quantity - ? WHERE flowerId = ?";
+                    db.query(
+                      updateStockQuery,
+                      [item.quantity, item.flowerId],
+                      (updateErr, updateResult) => {
+                        if (updateErr) {
+                          console.error("Error updating stock:", updateErr);
+                        }
+                      }
+                    );
+                  });
+
                   res.redirect("/dashboard?payment=success");
                 }
               );
@@ -305,13 +323,15 @@ module.exports = function (app, shopData) {
     req.session.cart = req.session.cart || [];
 
     // Check if the flower already exists in the cart
-    const existingFlower = req.session.cart.find(
+    const existingFlowerIndex = req.session.cart.findIndex(
       (item) => item.flowerId === flowerId
     );
 
-    if (existingFlower) {
+    if (existingFlowerIndex !== -1) {
+      console.log("Flower already exists in cart. Updating quantity...");
       // If the flower already exists, update its quantity
-      existingFlower.quantity += quantity;
+      req.session.cart[existingFlowerIndex].quantity += quantity;
+      res.redirect("/basket");
     } else {
       // If the flower does not exist, get flower information based on flowerId
       let flowerQuery = `
