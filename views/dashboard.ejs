@@ -22,26 +22,26 @@
         <thead>
           <tr>
             <th>Order ID</th>
-            <th>Date</th>
+            <th>Flower Name</th>
+            <th>Price (£)</th>
+            <th>Quantity</th>
             <th>Total Amount</th>
             <th>Payment Method</th>
             <th>Shipping Address</th>
-            <th>Flower Name</th>
-            <th>Quantity</th>
-            <th>Price</th>
+            <th>Date</th>
           </tr>
         </thead>
         <tbody>
           <% orders.forEach(order => { %>
           <tr>
             <td><%= order.orderId %></td>
-            <td><%= order.order_date %></td>
-            <td><%= order.total_amount %></td>
+            <td><%= order.flower_name %></td>
+            <td><%= order.flower_price.toFixed(2) %></td>
+            <td><%= order.flower_quantity %></td>
+            <td><%= order.total_amount.toFixed(2) %></td>
             <td><%= order.payment_method %></td>
             <td><%= order.shipping_address %></td>
-            <td><%= order.flower_name %></td>
-            <td><%= order.quantity %></td>
-            <td><%= order.flower_price %></td>
+            <td><%= order.formatted_order_date %></td>
           </tr>
           <% }); %>
         </tbody>

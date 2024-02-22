@@ -246,23 +246,49 @@ module.exports = function (app, shopData) {
           console.error(err);
           res.send("Payment error");
         } else {
+          // Insert order into orders table
           const userId = req.session.userId;
-          const flowerId = req.session.cart[0].flowerId;
-          const quantity = req.session.cart[0].quantity;
-          const price = req.session.cart[0].price;
-          const insertOrderQuery =
-            "INSERT INTO order_details (orderId, flowerId, quantity, price) VALUES (?, ?, ?, ?)";
+          const totalAmount = subtotal;
+          const paymentMethod = charge.payment_method_details.type;
+          const shippingAddress = req.body.shippingAddress;
 
+          const orderQuery =
+            "INSERT INTO orders (user_id, total_amount, payment_method, shipping_address) VALUES (?, ?, ?, ?)";
           db.query(
-            insertOrderQuery,
-            [userId, flowerId, quantity, price],
-            (err, result) => {
-              if (err) {
-                console.error("Error inserting order details:", err);
-                return res.status(500).send("Error inserting order details");
+            orderQuery,
+            [userId, totalAmount, paymentMethod, shippingAddress],
+            (orderErr, orderResult) => {
+              if (orderErr) {
+                console.error(orderErr);
+                return res.send("Error placing order");
               }
-              req.session.cart = [];
-              res.redirect("/dashboard?payment=success");
+
+              const orderId = orderResult.insertId;
+
+              // Insert order details into order_details table
+              const orderDetailsQuery =
+                "INSERT INTO order_details (orderId, flowerId, quantity, price) VALUES ?";
+              const orderDetailsValues = req.session.cart.map((item) => [
+                orderId,
+                item.flowerId,
+                item.quantity,
+                item.price,
+              ]);
+
+              db.query(
+                orderDetailsQuery,
+                [orderDetailsValues],
+                (detailsErr, detailsResult) => {
+                  if (detailsErr) {
+                    console.error(detailsErr);
+                    return res.send("Error placing order details");
+                  }
+
+                  // Clear cart after successful order
+                  req.session.cart = [];
+                  res.redirect("/dashboard?payment=success");
+                }
+              );
             }
           );
         }
@@ -396,7 +422,7 @@ module.exports = function (app, shopData) {
     const userId = req.session.userId;
 
     let ordersQuery = `
-    SELECT o.*, f.name AS flower_name, f.price AS flower_price
+    SELECT o.*, f.name AS flower_name, f.price AS flower_price, DATE_FORMAT(o.order_date, '%a %b %e %Y %T') AS formatted_order_date
     FROM orders o
     INNER JOIN order_details od ON o.orderId = od.orderId
     INNER JOIN flowers f ON od.flowerId = f.flowerId

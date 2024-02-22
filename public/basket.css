@@ -38,8 +38,18 @@
   cursor: pointer;
 }
 
-.basket-container form button[type="submit"]:hover {
-  background-color: #d84ded;
+.basket-container form input[type="text"] {
+  margin-bottom: 10px;
+  padding: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.basket-container form input[type="text"]:focus {
+  outline: none;
+  border-color: #6fca00;
 }
 
 /* dashboard.css */
