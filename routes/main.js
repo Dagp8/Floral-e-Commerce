@@ -42,6 +42,18 @@ module.exports = function (app, shopData) {
     res.render("about.ejs", shopData);
   });
 
+  app.get("/faq", function (req, res) {
+    res.render("faq.ejs", shopData);
+  });
+
+  app.get("/terms", function (req, res) {
+    res.render("terms.ejs", shopData);
+  });
+
+  app.get("/privacy", function (req, res) {
+    res.render("privacy.ejs", shopData);
+  });
+
   app.get("/allflowers", function (req, res) {
     let sqlquery = `
     SELECT
@@ -416,10 +428,11 @@ module.exports = function (app, shopData) {
     });
   });
 
-  app.post("/add_comments", function (req, res) {
-    const { username, comment } = req.body;
+  app.post("/add_comments", redirectLogin, function (req, res) {
+    const { comment_text } = req.body;
+    const user_id = req.session.userId;
 
-    if (!username || !comment) {
+    if (!comment_text) {
       res.redirect("/add_comments");
     } else {
       const insertQuery = `
@@ -427,7 +440,7 @@ module.exports = function (app, shopData) {
         VALUES (?, ?);
       `;
 
-      db.query(insertQuery, [username, comment], (err, result) => {
+      db.query(insertQuery, [user_id, comment_text], (err, result) => {
         if (err) {
           console.error(err);
           res.redirect("/add_comments");

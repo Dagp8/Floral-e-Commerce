@@ -1,0 +1,114 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Terms */
+.terms-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.terms-container h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.terms-container h3 {
+  font-size: 20px;
+  color: #555;
+  margin-top: 20px;
+}
+
+.terms-container p {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 15px;
+}
+
+/* FAQs */
+
+.faq-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.faq-container h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.faq-container h3 {
+  font-size: 20px;
+  color: #555;
+  margin-top: 20px;
+}
+
+.faq-container p {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 15px;
+}
+
+.faq-container ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.faq-container ul li {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.faq-container ul li:before {
+  content: "\2022";
+  color: #666;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
+
+/*privacy */
+
+.privacy-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.privacy-container h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.privacy-container h3 {
+  font-size: 20px;
+  color: #555;
+  margin-top: 20px;
+}
+
+.privacy-container p {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 15px;
+}

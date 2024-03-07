@@ -2,6 +2,10 @@ body {
   background-color: #fff;
   margin: 10px;
   margin-bottom: 10px;
+  background-image: url("/images/Harmony.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top;
 }
 
 /* Gallery img */
@@ -58,11 +62,10 @@ figcaption {
   border: 2px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
 }
 
-h2 {
-  color: #333;
+h1 {
+  color: #1e7b01;
   text-align: center;
 }
 
@@ -269,7 +272,7 @@ p {
   margin: 0;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around; /* Para espaciar los elementos horizontalmente */
+  justify-content: space-around;
 }
 
 .ecua-item {
@@ -277,12 +280,12 @@ p {
   margin: 10px;
   padding: 10px;
   text-align: center;
-  display: flex; /* Cambiado de inline-block a flex para mejor alineación */
-  flex-direction: column; /* Alinear contenido verticalmente */
+  display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 200px; /* Ajusta el ancho según tu preferencia */
-  height: 350px; /* Ajusta la altura según tu preferencia */
+  width: 200px;
+  height: 350px;
   position: relative;
 }
 
@@ -290,7 +293,7 @@ p {
   width: 150px;
   height: 150px;
   object-fit: cover;
-  margin-bottom: 10px; /* Espaciado entre la imagen y el texto */
+  margin-bottom: 10px;
 }
 
 .original-price {
@@ -327,4 +330,55 @@ input[type="number"] {
 
 .offers-button:hover {
   background-color: #45a049;
+}
+
+/* recent comments   */
+.recent-comments-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.recent-comments-container h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.recent-comments-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.recent-comments-container li {
+  margin-bottom: 20px;
+  border: 2px solid #64e30a;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.recent-comments-container li strong {
+  color: #2e69ff;
+}
+
+.recent-comments-container li p {
+  margin: 5px 0;
+}
+
+.recent-comments-container li em {
+  color: #010101;
+}
+
+/* Video */
+
+.video-container {
+  width: 800px;
+  height: auto;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 30px auto 0;
+}
+
+.video-container video {
+  width: 100%;
+  height: 100%;
 }

@@ -2,7 +2,6 @@
   max-width: 800px;
   margin: 20px auto;
   padding: 20px;
-  background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 }
@@ -90,7 +89,7 @@ table tr:hover {
   padding: 10px 20px;
   text-decoration: none;
   color: #ffffff;
-  background-color: #e4f777;
+  background-color: #4caf50;
   border: 2px solid #4caf50;
   border-radius: 5px;
   font-size: 16px;
@@ -101,6 +100,6 @@ table tr:hover {
 }
 
 .shopping-btn:hover {
-  background-color: #547a35; /* Cambio de color al pasar el ratón */
+  background-color: #fbbce8; /* Cambio de color al pasar el ratón */
   border-color: #d6e554; /* Cambio de color del borde al pasar el ratón */
 }
