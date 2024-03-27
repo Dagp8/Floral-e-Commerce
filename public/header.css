@@ -32,6 +32,7 @@ h3 {
   margin: 0;
 }
 
+/* Nav */
 nav {
   background-color: #f4ffc48f;
   color: black;
@@ -53,12 +54,12 @@ nav ul {
 }
 
 nav li {
-  margin: 0 15px;
+  margin: 0 10px;
 }
 
 nav a {
   text-decoration: none;
-  font-size: 18px;
+  font-size: 20px;
   color: #757373;
   font-weight: bold;
 }
@@ -90,6 +91,38 @@ nav a:hover {
 #search-btn:hover {
   background-color: #45a049;
 }
+/*  Login y Logout */
+
+.loging-button,
+.logout-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 16px;
+  margin-right: 5px;
+}
+
+.loging-button:hover,
+.logout-button:hover {
+  background-color: #9df7a2;
+}
+
+/* Icons de Font Awesome */
+
+.loging-button::before,
+.logout-button::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "\f007";
+}
+
+.logout-button::before {
+  content: "\f2f5";
+}
 
 /* comments and add_comments buttons */
 .footer-buttons {
@@ -100,7 +133,7 @@ nav a:hover {
 }
 
 .add-comments-button {
-  background-color: #4caf50;
+  background-color: #95f998;
   color: white;
   padding: 10px 15px;
   text-decoration: none;

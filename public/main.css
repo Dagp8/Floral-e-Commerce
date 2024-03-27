@@ -4,8 +4,8 @@ body {
   margin-bottom: 10px;
   background-image: url("/images/Harmony.png");
   background-repeat: no-repeat;
-  background-size: cover;
-  background-position: top;
+  background-size: contain;
+  background-position: center;
 }
 
 /* Gallery img */
@@ -76,14 +76,27 @@ p {
   margin-bottom: 20px;
 }
 
+/* about video */
+
+.video-container {
+  width: 800px;
+  height: auto;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 30px auto 0;
+}
+
+.video-container video {
+  width: 100%;
+  height: 100%;
+}
+
 /* login and register Form*/
 .form-container {
   text-align: center;
 }
 
 .custom-form {
-  background-color: #fff;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   padding: 20px;
   width: 500px;
@@ -115,7 +128,7 @@ p {
 
 .custom-form button,
 .custom-form input[type="submit"] {
-  background-color: #4caf50;
+  background-color: #9deb79;
   color: #fff;
   padding: 10px 15px;
   border: none;
@@ -126,7 +139,7 @@ p {
 
 .custom-form button:hover,
 .custom-form input[type="submit"]:hover {
-  background-color: #45a049;
+  background-color: #ce8bf9;
 }
 
 .custom-form::before {
@@ -136,7 +149,7 @@ p {
   right: -5px;
   bottom: -5px;
   left: -5px;
-  background: linear-gradient(45deg, #4caf50, #45a049);
+
   z-index: -1;
   border-radius: 12px;
   opacity: 0.7;
@@ -145,65 +158,13 @@ p {
 
 @keyframes glow {
   0% {
-    box-shadow: 0 0 5px #4caf50;
+    box-shadow: 0 0 10px #4caf50;
   }
   100% {
     box-shadow: 0 0 20px #45a049;
   }
 }
 
-/* payment Form*/
-
-.payment-form-container {
-  width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.payment-form-container h1 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.payment-form-container label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-.payment-form-container input[type="text"],
-.payment-form-container input[type="submit"] {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.payment-form-container #card-element {
-  margin-bottom: 10px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.payment-form-container #card-errors {
-  color: red;
-  margin-bottom: 10px;
-}
-
-.payment-form-container input[type="submit"] {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.payment-form-container input[type="submit"]:hover {
-  background-color: #0056b3;
-}
 /* Global flowers styles */
 .offers-container,
 .ecua-container {
@@ -300,19 +261,4 @@ input[type="number"] {
 
 .recent-comments-container li em {
   color: #010101;
-}
-
-/* Video */
-
-.video-container {
-  width: 800px;
-  height: auto;
-  border-radius: 10px;
-  overflow: hidden;
-  margin: 30px auto 0;
-}
-
-.video-container video {
-  width: 100%;
-  height: 100%;
 }

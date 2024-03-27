@@ -29,7 +29,6 @@
             <th>Discount Amount</th>
             <th>Discounted Price</th>
             <th>Quantity</th>
-            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -46,33 +45,71 @@
               item.discount).toFixed(2) %> <% } else { %> £<%=
               item.price.toFixed(2) %> <% } %>
             </td>
-            <td><%= item.quantity %></td>
             <td>
+              <form
+                class="update-remove-form"
+                action="/update-cart-quantity"
+                method="post"
+              >
+                <input type="hidden" name="index" value="<%= index %>" />
+                <input
+                  type="number"
+                  name="quantity"
+                  value="<%= item.quantity %>"
+                  min="1"
+                  max="99"
+                />
+                <button type="submit" class="update-btn">Update</button>
+              </form>
               <form
                 class="remove-form"
                 action="/remove-from-cart"
                 method="post"
               >
                 <input type="hidden" name="index" value="<%= index %>" />
-                <button type="submit">Remove</button>
+                <button type="submit" class="remove-btn">Remove</button>
               </form>
             </td>
           </tr>
-          <% subtotal += (item.price - (item.discount || 0)) %> <% }) %>
+          <% subtotal += (item.price - (item.discount || 0)) * item.quantity; %>
+          <% }); %>
         </tbody>
       </table>
       <p>Subtotal: £<%= subtotal.toFixed(2) %></p>
       <p>Total: £<%= (subtotal || 0).toFixed(2) %></p>
 
-      <form action="/payment" method="POST">
-        <input type="hidden" name="subtotal" value="<%= subtotal %>" />
+      <div class="shipping">
+        <h3>Shipping Information</h3>
+        <label for="houseFlatNumber">House or Flat Number:</label>
         <input
           type="text"
-          name="shippingAddress"
-          placeholder="Shipping Address"
+          id="houseFlatNumber"
+          name="houseFlatNumber"
           required
         />
+        <label for="addressLine1">Address Line 1:</label>
+        <input type="text" id="addressLine1" name="addressLine1" required />
+        <label for="addressLine2">Address Line 2:</label>
+        <input type="text" id="addressLine2" name="addressLine2" />
+        <label for="postcode">Postcode:</label>
+        <input type="text" id="postcode" name="postcode" required />
+      </div>
 
+      <div class="card-message">
+        <h3>Card Message</h3>
+        <textarea id="cardMessage" name="cardMessage"></textarea>
+      </div>
+
+      <div class="shoping_btn">
+        <a href="allflowers" class="shopping-btn">Continue Shopping</a>
+      </div>
+
+      <form id="payment-form" action="/payment" method="POST">
+        <input
+          type="hidden"
+          name="subtotal"
+          value="<%= subtotal.toFixed(2) %>"
+        />
         <script
           src="https://checkout.stripe.com/checkout.js"
           class="stripe-button"
@@ -84,7 +121,6 @@
           data-locale="auto"
           data-currency="gbp"
         ></script>
-        <a href="allflowers" class="shopping-btn">Continue Shopping</a>
       </form>
 
       <% } %>

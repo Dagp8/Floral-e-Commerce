@@ -376,10 +376,32 @@ module.exports = function (app, shopData) {
 
   app.post("/remove-from-cart", function (req, res) {
     const cartIndex = req.body.index;
+    const quantityToRemove = parseInt(req.body.quantityToRemove);
 
     if (req.session.cart && req.session.cart.length > cartIndex) {
-      req.session.cart.splice(cartIndex, 1);
+      const iteam = req.session.cart[cartIndex];
+      if (iteam.quantity > quantityToRemove) {
+        iteam.quantity -= quantityToRemove;
+      } else {
+        req.session.cart.splice(cartIndex, 1);
+      }
     }
+    res.redirect("/basket");
+  });
+
+  app.post("/update-cart-quantity", function (req, res) {
+    const cartIndex = req.body.index;
+    const newQuantity = parseInt(req.body.quantity);
+
+    // Validate if the cart index is valid
+    if (
+      req.session.cart &&
+      req.session.cart.length > cartIndex &&
+      newQuantity > 0
+    ) {
+      req.session.cart[cartIndex].quantity = newQuantity;
+    }
+
     res.redirect("/basket");
   });
 
