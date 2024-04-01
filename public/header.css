@@ -74,41 +74,38 @@ nav a:hover {
 }
 
 #search-box {
-  background-color: rgb(196, 232, 249);
-  padding: 5px;
+  background-color: #f4ffc48f;
+  padding: 3px;
   border-radius: 5px;
 }
 
 #search-btn {
   background-color: #4caf50;
-  color: white;
-  border: none;
   padding: 5px 10px;
+  border: none;
   border-radius: 5px;
-  cursor: pointer;
+  color: white;
+  box-shadow: -4px -4px 8px white, 4px 4px 8px rgb(249, 121, 240);
 }
 
 #search-btn:hover {
-  background-color: #45a049;
+  box-shadow: 2px 2px 2px white, -2px -2px 2px rgb(249, 121, 240);
 }
 /*  Login y Logout */
 
 .loging-button,
 .logout-button {
   background-color: #4caf50;
-  color: white;
+  padding: 2px 6px;
   border: none;
-  padding: 8px 16px;
   border-radius: 5px;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 16px;
-  margin-right: 5px;
+  color: white;
+  box-shadow: -4px -4px 8px white, 4px 4px 8px rgb(249, 121, 240);
 }
 
 .loging-button:hover,
 .logout-button:hover {
-  background-color: #9df7a2;
+  box-shadow: 2px 2px 2px white, -2px -2px 2px rgb(249, 121, 240);
 }
 
 /* Icons de Font Awesome */
@@ -116,7 +113,7 @@ nav a:hover {
 .loging-button::before,
 .logout-button::before {
   font-family: "Font Awesome 5 Free";
-  font-weight: 900;
+  font-weight: 700;
   content: "\f007";
 }
 
@@ -156,28 +153,16 @@ nav a:hover {
   background-color: #0077a8;
 }
 
-/* footer */
-
+/* Footer */
 footer {
   background-color: #f4ffc48f;
-  margin-top: 50px;
-  padding: 30px;
+  padding: 50px 0;
   text-align: center;
-}
-
-span {
-  margin-bottom: 30px;
-  font-size: 25px;
-  text-align: left;
 }
 
 .footer-content {
   max-width: 800px;
   margin: 0 auto;
-  padding: 20px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
 }
 
 .footer-line {
@@ -186,17 +171,54 @@ span {
   margin-bottom: 40px;
 }
 
-.footer-content a {
+.footer-line a {
   color: #070606;
   text-decoration: none;
-  margin: 0 30px;
-  font-size: 20px;
-}
-.footer-content a:hover {
-  color: #ff78e0;
+  margin: 0 20px;
+  transition: color 0.3s ease;
 }
 
-.footer-content i {
-  margin-right: 10px;
-  font-size: 35px;
+.footer-line a:hover {
+  color: #ff69b4;
+}
+
+.footer-line a i {
+  font-size: 25px;
+}
+
+.contact {
+  margin-top: 20px;
+}
+
+.contact ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.contact li {
+  margin-bottom: 10px;
+}
+
+.contact li::before {
+  margin-right: 5px;
+}
+
+.contact li:nth-child(1)::before {
+  content: "\2709"; /* Icono de email */
+  color: #ff6f61;
+}
+
+.contact li:nth-child(2)::before {
+  content: "\260E"; /* Icono de teléfono */
+  color: #007bff;
+}
+
+.contact li:nth-child(3)::before {
+  content: "\1F4BC"; /* Icono de dirección */
+  color: #28a745;
+}
+
+span {
+  font-size: 20px;
+  font-weight: bold;
 }
