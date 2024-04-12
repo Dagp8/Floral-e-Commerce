@@ -114,7 +114,7 @@ module.exports = function (app, shopData) {
               console.error("Error saving user data:", err);
               res.status(500).send("Error saving user data");
             } else {
-              res.render("login.ejs", shopData);
+              res.redirect("/dashboard");
             }
           });
         }
