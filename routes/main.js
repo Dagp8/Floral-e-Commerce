@@ -8,7 +8,7 @@ const stripe = require("stripe")(
 module.exports = function (app, shopData) {
   const redirectLogin = (req, res, next) => {
     if (!req.session.userId) {
-      res.redirect("./login");
+      res.redirect("login");
     } else {
       next();
     }
@@ -114,7 +114,7 @@ module.exports = function (app, shopData) {
               console.error("Error saving user data:", err);
               res.status(500).send("Error saving user data");
             } else {
-              res.redirect("/dashboard");
+              res.redirect("dashboard");
             }
           });
         }
@@ -154,7 +154,7 @@ module.exports = function (app, shopData) {
           // Passwords match - user is authenticated
           // Save user session here, when login is successful
           req.session.userId = userId;
-          res.redirect("/dashboard");
+          res.redirect("dashboard");
         } else {
           // Passwords do not match
           res.status(401).send("Incorrect password");
@@ -170,7 +170,7 @@ module.exports = function (app, shopData) {
         res.status(500).send("Error logging out. Please try again.");
       } else {
         //  no errors, send a success message and redirect to the home page.
-        res.redirect("/");
+        res.redirect("./");
       }
     });
   });
@@ -343,7 +343,7 @@ module.exports = function (app, shopData) {
       console.log("Flower already exists in cart. Updating quantity...");
       // If the flower already exists, update its quantity
       req.session.cart[existingFlowerIndex].quantity += quantity;
-      res.redirect("/basket");
+      res.redirect("basket");
     } else {
       // If the flower does not exist, get flower information based on flowerId
       let flowerQuery = `
@@ -369,7 +369,7 @@ module.exports = function (app, shopData) {
         // Add the flower information to the cart
         req.session.cart.push(flowerInfo);
         // Redirect to the basket page after adding to the cart
-        res.redirect("/basket");
+        res.redirect("basket");
       });
     }
   });
@@ -467,7 +467,7 @@ module.exports = function (app, shopData) {
           console.error(err);
           res.redirect("/add_comments");
         } else {
-          res.redirect("/comments");
+          res.redirect("comments");
         }
       });
     }
