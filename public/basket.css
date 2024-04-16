@@ -77,23 +77,6 @@
   height: 100px;
 }
 
-.card-message {
-  margin-top: 20px;
-}
-
-.card-message h3 {
-  color: #6fca00;
-}
-
-.card-message textarea {
-  width: calc(100% - 20px);
-  padding: 8px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  resize: vertical;
-}
-
 .shoping_btn {
   margin-top: 20px;
   margin-bottom: 20px;

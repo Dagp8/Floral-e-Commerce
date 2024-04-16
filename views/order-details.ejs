@@ -28,7 +28,6 @@
               <th>Quantity</th>
               <th>Total Amount</th>
               <th>Payment Method</th>
-              <th>Shipping Address</th>
               <th>Date</th>
             </tr>
           </thead>
@@ -41,7 +40,6 @@
               <td><%= item.quantity %></td>
               <td>£<%= item.subtotal.toFixed(2) %></td>
               <td><%= item.payment_method %></td>
-              <td><%= item.shipping_address %></td>
               <td><%= item.formatted_order_date %></td>
             </tr>
             <% }); %>
