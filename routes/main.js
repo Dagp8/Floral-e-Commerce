@@ -7,7 +7,7 @@ const stripe = require("stripe")(
 
 module.exports = function (app, shopData) {
   const redirectLogin = (req, res, next) => {
-    if (!req.session.userId) {
+    if (!req.session.userId && !req.session.justRegistered) {
       res.redirect("login");
     } else {
       next();
@@ -114,6 +114,7 @@ module.exports = function (app, shopData) {
               console.error("Error saving user data:", err);
               res.status(500).send("Error saving user data");
             } else {
+              req.session.justRegistered = true;
               res.redirect("dashboard");
             }
           });
