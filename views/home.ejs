@@ -14,6 +14,30 @@
   <body>
     <%- include('header') %> <%- include('nav') %>
 
+    <div class="slider" id="slider">
+      <section class="showing">
+        <img src="/images/slide1.jpeg" alt="Slider Image 1" />
+      </section>
+      <section>
+        <img src="/images/slide2.jpeg" alt="Slider Image 2" />
+      </section>
+      <section>
+        <img src="/images/slide3.jpeg" alt="Slider Image 3" />
+      </section>
+      <section>
+        <img src="/images/slide4.jpeg" alt="Slider Image 3" />
+      </section>
+      <section>
+        <img src="/images/slide5.jpeg" alt="Slider Image 3" />
+      </section>
+      <section>
+        <img src="/images/slide6.jpeg" alt="Slider Image 3" />
+      </section>
+      <section>
+        <img src="/images/slide7.jpeg" alt="Slider Image 3" />
+      </section>
+    </div>
+
     <div class="gallery-container">
       <figure class="gallery__item">
         <a href="/ecuaflor">
@@ -83,5 +107,23 @@
       </ul>
     </div>
   </body>
+
   <%- include('footer') %>
+
+  <script>
+    //slider
+    const slides = document.querySelectorAll(".slider section");
+    let currentSlide = 0;
+    const slideInterval = 5000;
+    function nextSlide() {
+      slides[currentSlide].classList.remove("showing");
+
+      currentSlide = (currentSlide + 1) % slides.length;
+
+      slides[currentSlide].classList.add("showing");
+    }
+    setTimeout(() => {
+      setInterval(nextSlide, slideInterval);
+    }, 1000);
+  </script>
 </html>

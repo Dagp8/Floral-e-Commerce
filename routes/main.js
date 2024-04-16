@@ -316,7 +316,7 @@ module.exports = function (app, shopData) {
                     );
                   });
 
-                  res.redirect("/dashboard?payment=success");
+                  res.redirect("dashboard?payment=success");
                 }
               );
             }
@@ -386,7 +386,7 @@ module.exports = function (app, shopData) {
         req.session.cart.splice(cartIndex, 1);
       }
     }
-    res.redirect("/basket");
+    res.redirect("basket");
   });
 
   app.post("/update-cart-quantity", function (req, res) {
@@ -402,7 +402,7 @@ module.exports = function (app, shopData) {
       req.session.cart[cartIndex].quantity = newQuantity;
     }
 
-    res.redirect("/basket");
+    res.redirect("basket");
   });
 
   // routes for comments
