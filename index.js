@@ -11,7 +11,6 @@ const port = 8000;
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //Create a session
-
 app.use(
   session({
     secret: "somerandom",

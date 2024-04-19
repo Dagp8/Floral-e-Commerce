@@ -32,8 +32,15 @@
         </p>
         <p>
           Password:
-          <input id="password" type="password" name="password" />
+          <input
+            id="password"
+            type="password"
+            name="password"
+            minlength="6"
+            required
+          />
         </p>
+
         <input type="submit" value="Register" />
         <p>Already have an account? <a href="/login">Log In here</a>.</p>
       </form>

@@ -13,6 +13,14 @@ module.exports = function (app, shopData) {
       next();
     }
   };
+
+  // render nav bar
+  app.use((req, res, next) => {
+    res.locals.isLoggedIn = req.session.userId ? true : false;
+    res.locals.loggedIn = req.session.userId ? true : false;
+    next();
+  });
+
   // Handle routes
 
   app.get("/", function (req, res) {
@@ -92,30 +100,52 @@ module.exports = function (app, shopData) {
         .withMessage("Password must be at least 6 characters long"),
     ],
     function (req, res) {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
       const plainPassword = req.body.password;
       // Hash the password using bcrypt
       bcrypt.hash(plainPassword, saltRounds, function (err, hashedPassword) {
         if (err) {
           res.status(500).send("Error hashing password");
         } else {
-          // Store the data in your database
-          let sqlquery =
-            "INSERT INTO users (first_name, last_name, email, username, hashedPassword) VALUES (?, ?, ?, ?, ?)";
-          let newpass = [
-            req.body.first,
-            req.body.last,
-            req.body.email,
-            req.body.username,
-            hashedPassword,
-          ];
-
-          db.query(sqlquery, newpass, (err, result) => {
+          // Check if the username already exists in the database
+          let usernameQuery = "SELECT * FROM users WHERE username = ?";
+          db.query(usernameQuery, [req.body.username], (err, result) => {
             if (err) {
-              console.error("Error saving user data:", err);
-              res.status(500).send("Error saving user data");
+              console.error("Error checking username:", err);
+              return res.status(500).send("Error checking username");
+            }
+
+            if (result.length > 0) {
+              // If the username already exists, return an error
+              return res.status(400).send("Username already exists");
             } else {
-              req.session.justRegistered = true;
-              res.redirect("dashboard");
+              // Store the data in your database
+              let sqlquery =
+                "INSERT INTO users (first_name, last_name, email, username, hashedPassword) VALUES (?, ?, ?, ?, ?)";
+              let newpass = [
+                req.body.first,
+                req.body.last,
+                req.body.email,
+                req.body.username,
+                hashedPassword,
+              ];
+
+              db.query(sqlquery, newpass, (err, result) => {
+                if (err) {
+                  console.error("Error saving user data:", err);
+                  res.status(500).send("Error saving user data");
+                } else {
+                  req.session.justRegistered = true;
+                  req.session.userId = result.insertId;
+                  req.session.username = req.body.username;
+                  req.session.isLoggedIn = true;
+                  req.session.loggedIn = true;
+                  res.redirect("dashboard");
+                }
+              });
             }
           });
         }
@@ -155,6 +185,7 @@ module.exports = function (app, shopData) {
           // Passwords match - user is authenticated
           // Save user session here, when login is successful
           req.session.userId = userId;
+          req.session.username = username;
           res.redirect("dashboard");
         } else {
           // Passwords do not match
@@ -494,11 +525,13 @@ module.exports = function (app, shopData) {
       }
 
       const paymentSuccess = req.query.payment === "success";
+      const username = req.session.username;
 
       res.render("dashboard.ejs", {
         ...shopData,
         orders: orders,
         paymentSuccess: paymentSuccess,
+        username: username,
       });
     });
   });
