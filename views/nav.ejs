@@ -9,10 +9,10 @@
   </ul>
 
   <% if (!isLoggedIn) { %>
-  <p><a href="/login" class="login-button">Login</a></p>
+  <p><a href="login" class="login-button">Login</a></p>
   <% } %> <% if (isLoggedIn) { %>
   <p><a href="add_comments">Add Comments</a></p>
-  <p><a href="/logout" class="logout-button">Logout</a></p>
+  <p><a href="logout" class="logout-button">Logout</a></p>
   <% } %>
 
   <form action="/search-result" method="GET" class="search-form">
