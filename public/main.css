@@ -2,7 +2,7 @@ body {
   background-color: #fff;
   margin: 10px;
   margin-bottom: 10px;
-  background-image: url("/images/Harmony.png");
+  background-image: url("images/Harmony.png");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;

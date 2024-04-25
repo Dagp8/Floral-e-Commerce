@@ -1,3 +1,4 @@
+/* Header */
 header {
   background-color: #f4ffc48f;
   color: black;
@@ -13,6 +14,7 @@ header {
   text-align: center;
   position: relative;
 }
+
 .logo {
   position: absolute;
   top: 50%;
@@ -93,7 +95,6 @@ nav a:hover {
 }
 
 /* Icons de Font Awesome */
-
 .loging-button::before,
 .logout-button::before {
   font-family: "Font Awesome 5 Free";
@@ -188,21 +189,70 @@ footer {
 }
 
 .contact li:nth-child(1)::before {
-  content: "\2709"; /* Icono de email */
+  content: "\2709";
   color: #ff6f61;
 }
 
 .contact li:nth-child(2)::before {
-  content: "\260E"; /* Icono de teléfono */
+  content: "\260E";
   color: #007bff;
 }
 
 .contact li:nth-child(3)::before {
-  content: "\1F4BC"; /* Icono de dirección */
+  content: "\1F4BC";
   color: #28a745;
 }
 
 span {
   font-size: 20px;
   font-weight: bold;
+}
+
+/* Media queries */
+@media only screen and (max-width: 600px) {
+  .header-content {
+    padding: 10px 0;
+  }
+
+  .logo {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    width: auto;
+    margin-bottom: 10px;
+  }
+
+  .logo img {
+    max-height: 80px;
+  }
+
+  nav {
+    padding: 10px;
+    margin-top: 20px;
+  }
+
+  nav ul {
+    flex-direction: column;
+  }
+
+  nav li {
+    margin: 10px 0;
+  }
+
+  nav a {
+    font-size: 16px;
+  }
+
+  .search-form {
+    margin-top: 10px;
+  }
+
+  #search-box {
+    padding: 2px;
+  }
+
+  #search-btn {
+    padding: 3px 8px;
+  }
 }
