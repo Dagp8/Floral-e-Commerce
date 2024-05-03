@@ -26,7 +26,6 @@
           <tr>
             <th>Product</th>
             <th>Price</th>
-            <th>Discount Amount</th>
             <th>Discounted Price</th>
             <th>Quantity</th>
           </tr>
@@ -36,10 +35,6 @@
           <tr>
             <td><%= item.name %></td>
             <td>£<%= item.price.toFixed(2) %></td>
-            <td>
-              <% if (item.discount) { %> £<%= item.discount.toFixed(2) %> <% }
-              else { %> N/A <% } %>
-            </td>
             <td>
               <% if (item.discount) { %> £<%= (item.price -
               item.discount).toFixed(2) %> <% } else { %> £<%=

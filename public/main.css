@@ -110,10 +110,11 @@ p {
 .custom-form {
   border-radius: 8px;
   padding: 20px;
-  width: 500px;
+  width: 90%;
+  max-width: 500px;
   position: relative;
   display: inline-block;
-  margin-top: 40px;
+  margin-top: 40px auto;
   text-align: left;
 }
 
@@ -173,6 +174,12 @@ p {
   }
   100% {
     box-shadow: 0 0 20px #45a049;
+  }
+}
+/* mobil styles  */
+@media only screen and (max-width: 600px) {
+  .custom-form {
+    width: 90%;
   }
 }
 

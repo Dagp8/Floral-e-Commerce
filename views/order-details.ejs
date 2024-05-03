@@ -22,25 +22,21 @@
         <table>
           <thead>
             <tr>
-              <th>Order ID</th>
               <th>Flower Name</th>
               <th>Price</th>
               <th>Quantity</th>
               <th>Total Amount</th>
               <th>Payment Method</th>
-              <th>Date</th>
             </tr>
           </thead>
           <tbody>
             <% orders.forEach(item => { %>
             <tr>
-              <td><%= item.orderId %></td>
               <td><%= item.flower_name %></td>
               <td>£<%= item.flower_price.toFixed(2) %></td>
               <td><%= item.quantity %></td>
               <td>£<%= item.subtotal.toFixed(2) %></td>
               <td><%= item.payment_method %></td>
-              <td><%= item.formatted_order_date %></td>
             </tr>
             <% }); %>
 
